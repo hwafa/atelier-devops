@@ -5,8 +5,7 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=wp
-      - MYSQL_DATABASE=timesheet-devops-db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - 3307:3306
     volumes:
@@ -15,19 +14,8 @@ services:
     depends_on:
       - mysqldb
     image: wafahidri/timesheet-devops:1.0.0
-    restart: on-failure
+    restart: unless-stopped
     ports:
       - 8082:8082
-    environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/timesheet-devops-db?createDatabaseIfNotExist=true",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : "wp",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
-      }'
-    stdin_open: true
-    tty: true
-
 volumes:
   db : 
